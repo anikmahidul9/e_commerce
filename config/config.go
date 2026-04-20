@@ -4,18 +4,20 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+
 	"github.com/joho/godotenv"
 )
 
 var configurations Config
 
 type Config struct {
-	Version string
+	Version     string
 	ServiceName string
-	HttpPort int
+	HttpPort    int
+	SecretKey   string
 }
 
-func loadConfig(){
+func loadConfig() {
 	err := godotenv.Load()
 	if err != nil {
 		fmt.Println("Error loading .env file:", err)
@@ -27,13 +29,13 @@ func loadConfig(){
 		fmt.Println("SERVICE_NAME is not set in .env file")
 		os.Exit(1)
 	}
-	
+
 	version := os.Getenv("VERSION")
 	if version == "" {
 		fmt.Println("VERSION is not set in .env file")
 		os.Exit(1)
 	}
-	
+
 	httpPortStr := os.Getenv("HTTP_PORT")
 	if httpPortStr == "" {
 		fmt.Println("HTTP_PORT is not set in .env file")
@@ -45,16 +47,23 @@ func loadConfig(){
 		os.Exit(1)
 	}
 
+	secret := os.Getenv("SECRET_KEY")
+	if secret == "" {
+		fmt.Println("SECRET_KEY is not set in .env file")
+		os.Exit(1)
+	}
+
 	configurations = Config{
 		Version:     version,
 		ServiceName: serviceName,
 		HttpPort:    httpPort,
+		SecretKey:   secret,
 	}
 
 }
 
-func GetConfig() Config {
-		loadConfig()
-	
-	return configurations
+func GetConfig() *Config {
+	loadConfig()
+
+	return &configurations
 }
