@@ -1,7 +1,7 @@
 package main
 
-import  "ecommerce/cmd"
+import "ecommerce/cmd"
 
-func main(){
+func main() {
 	cmd.Serve()
 }
